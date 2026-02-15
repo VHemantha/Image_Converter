@@ -1,24 +1,7 @@
+# Single-container Image Converter — no Redis, no Celery
 version: '3.8'
 
 services:
-  # Redis - Message broker and result backend for Celery
-  redis:
-    image: redis:7-alpine
-    container_name: image_converter_redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - image_converter_network
-
-  # Flask Web Application
   web:
     build:
       context: .
@@ -31,8 +14,6 @@ services:
       - FLASK_APP=run.py
       - FLASK_ENV=production
       - SECRET_KEY=${SECRET_KEY:-change-this-secret-key-in-production}
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/1
       - MAX_CONTENT_LENGTH=52428800
       - UPLOAD_FOLDER=/app/temp/uploads
       - CONVERTED_FOLDER=/app/temp/converted
@@ -40,74 +21,9 @@ services:
     volumes:
       - ./temp:/app/temp
       - ./logs:/app/logs
-    depends_on:
-      redis:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
-    networks:
-      - image_converter_network
-
-  # Celery Worker - Processes async image conversions
-  celery_worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: image_converter_celery_worker
-    restart: unless-stopped
-    command: celery -A celery_worker.celery_app worker --loglevel=info --concurrency=4
-    environment:
-      - FLASK_ENV=production
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/1
-      - UPLOAD_FOLDER=/app/temp/uploads
-      - CONVERTED_FOLDER=/app/temp/converted
-    volumes:
-      - ./temp:/app/temp
-      - ./logs:/app/logs
-    depends_on:
-      redis:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "celery", "-A", "celery_worker.celery_app", "inspect", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    networks:
-      - image_converter_network
-
-  # Celery Beat - Scheduler for periodic cleanup tasks
-  celery_beat:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: image_converter_celery_beat
-    restart: unless-stopped
-    command: celery -A celery_worker.celery_app beat --loglevel=info
-    environment:
-      - FLASK_ENV=production
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/1
-      - UPLOAD_FOLDER=/app/temp/uploads
-      - CONVERTED_FOLDER=/app/temp/converted
-    volumes:
-      - ./temp:/app/temp
-      - ./logs:/app/logs
-    depends_on:
-      redis:
-        condition: service_healthy
-    networks:
-      - image_converter_network
-
-networks:
-  image_converter_network:
-    driver: bridge
-
-volumes:
-  redis_data:
-    driver: local

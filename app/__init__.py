@@ -61,4 +61,8 @@ def create_app(config_name=None):
         from datetime import datetime
         return dict(current_year=datetime.now().year)
 
+    # Start background cleanup scheduler (every 15 minutes)
+    from app.task_manager import start_cleanup_scheduler
+    start_cleanup_scheduler(app)
+
     return app

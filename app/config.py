@@ -32,13 +32,7 @@ class BaseConfig:
     ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp', 'avif', 'tiff', 'tif', 'bmp', 'gif', 'ico', 'heic', 'heif'}
     FILE_RETENTION_MINUTES = int(os.getenv('FILE_RETENTION_MINUTES', 60))
 
-    # Redis Configuration
-    REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
-    CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
-    CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/1')
-
-    # Rate Limiting
-    RATELIMIT_STORAGE_URL = os.getenv('RATE_LIMIT_STORAGE_URL', 'redis://localhost:6379/2')
+    # Rate Limiting (in-memory by default, no Redis needed)
     RATELIMIT_ENABLED = True
     RATELIMIT_DEFAULT = os.getenv('RATE_LIMIT_PER_HOUR', '500 per hour')
     RATELIMIT_PER_MINUTE = os.getenv('RATE_LIMIT_PER_MINUTE', '30 per minute')
@@ -51,7 +45,7 @@ class BaseConfig:
 
     # CSRF Protection
     WTF_CSRF_ENABLED = True
-    WTF_CSRF_TIME_LIMIT = None  # No time limit for CSRF tokens
+    WTF_CSRF_TIME_LIMIT = None
 
     # Application Settings
     APP_NAME = os.getenv('APP_NAME', 'Image Converter Pro')
@@ -59,9 +53,6 @@ class BaseConfig:
 
     # Logging
     LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
-    LOG_FILE_ERRORS = os.getenv('LOG_FILE_ERRORS', 'logs/errors.log')
-    LOG_FILE_ACCESS = os.getenv('LOG_FILE_ACCESS', 'logs/access.log')
-    LOG_FILE_CONVERSIONS = os.getenv('LOG_FILE_CONVERSIONS', 'logs/conversions.log')
 
 
 class DevelopmentConfig(BaseConfig):
@@ -71,11 +62,8 @@ class DevelopmentConfig(BaseConfig):
     TESTING = False
     ENV = 'development'
 
-    # Relaxed security for development
     SESSION_COOKIE_SECURE = False
-    WTF_CSRF_ENABLED = True  # Still enable CSRF in development
-
-    # Verbose logging
+    WTF_CSRF_ENABLED = True
     LOG_LEVEL = 'DEBUG'
 
 
@@ -86,17 +74,9 @@ class ProductionConfig(BaseConfig):
     TESTING = False
     ENV = 'production'
 
-    # Strict security for production
-    SESSION_COOKIE_SECURE = True  # Requires HTTPS
+    SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Strict'
-
-    # Security headers (Flask-Talisman)
-    FORCE_HTTPS = True
-    STRICT_TRANSPORT_SECURITY = True
-    STRICT_TRANSPORT_SECURITY_MAX_AGE = 31536000  # 1 year
-
-    # Production logging
     LOG_LEVEL = 'WARNING'
 
 
@@ -107,20 +87,11 @@ class TestingConfig(BaseConfig):
     DEBUG = True
     ENV = 'testing'
 
-    # Use separate Redis DB for testing
-    REDIS_URL = 'redis://localhost:6379/10'
-    CELERY_BROKER_URL = 'redis://localhost:6379/10'
-    CELERY_RESULT_BACKEND = 'redis://localhost:6379/11'
-    RATELIMIT_STORAGE_URL = 'redis://localhost:6379/12'
-
-    # Disable rate limiting in tests
     RATELIMIT_ENABLED = False
 
-    # Use temporary directories for testing
     UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'temp', 'test_uploads')
     CONVERTED_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'temp', 'test_converted')
 
-    # CSRF enabled but not enforced in tests
     WTF_CSRF_ENABLED = False
 
 
