@@ -1,11 +1,14 @@
 """
 Routes for image conversion application.
-Phase 1: Synchronous conversion (Celery integration in Phase 2)
+Phase 1: Synchronous conversion
+Phase 2: Celery async processing
+Phase 3: Real-time SSE progress + ZIP downloads
 """
-from flask import Blueprint, render_template, request, jsonify, send_file, session, current_app
+from flask import Blueprint, render_template, request, jsonify, send_file, session, current_app, Response
 import os
 import uuid
 import logging
+import json
 from datetime import datetime
 
 from app.forms import UploadForm
@@ -267,13 +270,57 @@ def download(task_id, filename):
 @bp.route('/download-all/<task_id>')
 def download_all(task_id):
     """
-    Download all converted files as ZIP.
-    (To be implemented in Phase 3)
+    Download all converted files as ZIP archive.
+    Phase 3: Implemented ZIP download functionality.
     """
-    return jsonify({
-        'success': False,
-        'error': 'ZIP download not yet implemented'
-    }), 501
+    try:
+        import zipfile
+        from datetime import datetime
+        import tempfile
+
+        # Get list of files for this task
+        converted_folder = current_app.config['CONVERTED_FOLDER']
+
+        # Find all files matching the task_id
+        task_files = []
+        for filename in os.listdir(converted_folder):
+            if filename.startswith(task_id):
+                file_path = os.path.join(converted_folder, filename)
+                if os.path.exists(file_path):
+                    task_files.append((filename, file_path))
+
+        if not task_files:
+            return jsonify({
+                'success': False,
+                'error': 'No converted files found for this task'
+            }), 404
+
+        # Create temporary ZIP file
+        timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+        zip_filename = f'converted_images_{timestamp}.zip'
+        zip_path = os.path.join(tempfile.gettempdir(), zip_filename)
+
+        # Create ZIP archive
+        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for filename, file_path in task_files:
+                # Add file to ZIP with original name (remove task_id prefix)
+                archive_name = filename.replace(f'{task_id}_', '')
+                zipf.write(file_path, archive_name)
+
+        # Send ZIP file
+        return send_file(
+            zip_path,
+            as_attachment=True,
+            download_name=zip_filename,
+            mimetype='application/zip'
+        )
+
+    except Exception as e:
+        logger.error(f"Error creating ZIP archive: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': f'Error creating ZIP: {str(e)}'
+        }), 500
 
 
 @bp.route('/health')
@@ -326,11 +373,102 @@ def formats():
     })
 
 
+@bp.route('/stream/<task_id>')
+def stream_progress(task_id):
+    """
+    Server-Sent Events (SSE) endpoint for real-time progress streaming.
+    Phase 3: Live progress updates pushed to client.
+    """
+    def generate():
+        """Generator function for SSE stream."""
+        import time
+        from flask import Response
+
+        if not CELERY_AVAILABLE:
+            # Fallback: Check session for synchronous tasks
+            if task_id in session:
+                task_data = session[task_id]
+                yield f"data: {json.dumps({'state': 'SUCCESS', 'progress': 100, 'result': task_data.get('results', [])})}\n\n"
+            else:
+                yield f"data: {json.dumps({'state': 'NOT_FOUND', 'error': 'Task not found'})}\n\n"
+            return
+
+        try:
+            from app.tasks.celery_app import celery_app
+
+            # Poll task status and stream updates
+            max_iterations = 120  # 2 minutes max
+            iteration = 0
+
+            while iteration < max_iterations:
+                task = celery_app.AsyncResult(task_id)
+
+                if task.state == 'PENDING':
+                    data = {
+                        'state': task.state,
+                        'progress': 0,
+                        'status': 'Task is waiting to start...'
+                    }
+                elif task.state == 'PROGRESS':
+                    data = {
+                        'state': task.state,
+                        'progress': task.info.get('progress', 0),
+                        'current': task.info.get('current', 0),
+                        'total': task.info.get('total', 100),
+                        'status': task.info.get('status', 'Processing...')
+                    }
+                elif task.state == 'SUCCESS':
+                    data = {
+                        'state': task.state,
+                        'progress': 100,
+                        'result': task.result,
+                        'status': 'Complete!'
+                    }
+                    yield f"data: {json.dumps(data)}\n\n"
+                    break
+                elif task.state == 'FAILURE':
+                    data = {
+                        'state': task.state,
+                        'progress': 0,
+                        'error': str(task.info),
+                        'status': 'Task failed'
+                    }
+                    yield f"data: {json.dumps(data)}\n\n"
+                    break
+                else:
+                    data = {
+                        'state': task.state,
+                        'progress': 0,
+                        'status': str(task.info)
+                    }
+
+                yield f"data: {json.dumps(data)}\n\n"
+
+                # Stop streaming after success or failure
+                if task.state in ['SUCCESS', 'FAILURE']:
+                    break
+
+                time.sleep(0.5)  # Poll every 500ms
+                iteration += 1
+
+            # Timeout message if max iterations reached
+            if iteration >= max_iterations:
+                yield f"data: {json.dumps({'state': 'TIMEOUT', 'error': 'Task timeout'})}\n\n"
+
+        except Exception as e:
+            logger.error(f"Error streaming progress: {str(e)}")
+            yield f"data: {json.dumps({'state': 'ERROR', 'error': str(e)})}\n\n"
+
+    return Response(generate(), mimetype='text/event-stream')
+
+
 @bp.route('/status/<task_id>')
 def task_status(task_id):
     """
     Check the status of a Celery task.
     Returns progress information for async conversions.
+    Phase 2: Polling endpoint (kept for backwards compatibility)
+    Phase 3: Use /stream/<task_id> for real-time updates
     """
     if not CELERY_AVAILABLE:
         # Fallback: Check session for synchronous tasks

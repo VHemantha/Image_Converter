@@ -1,6 +1,24 @@
 # Image Converter - Quick Start Guide
 
-## 🚀 Instant Start (No Redis - Synchronous Mode)
+## 🐳 Easiest: Docker (Recommended)
+
+**One command to start everything!**
+
+```bash
+# Build and start all services (Flask, Redis, Celery)
+docker-compose up -d
+
+# Open browser
+http://localhost:5000
+```
+
+**Includes**: Flask web app, Redis, Celery worker, Celery beat, automatic health checks!
+
+[📚 Full Docker Guide →](DOCKER_SETUP.md)
+
+---
+
+## 🚀 Quick Start (No Docker - Synchronous Mode)
 
 ```bash
 # 1. Install dependencies
@@ -17,7 +35,7 @@ http://localhost:5000
 
 ---
 
-## ⚡ Full Async Mode (With Redis + Celery)
+## ⚡ Full Async Mode (No Docker - Manual Setup)
 
 ### Terminal 1: Start Redis
 ```bash
@@ -31,12 +49,12 @@ python run.py
 
 ### Terminal 3: Start Celery Worker
 ```bash
-celery -A app.tasks.celery_app worker --loglevel=info --pool=solo
+celery -A celery_worker.celery_app worker --loglevel=info --pool=solo
 ```
 
 ### Terminal 4: Start Celery Beat (Optional - Auto-cleanup)
 ```bash
-celery -A app.tasks.celery_app beat --loglevel=info
+celery -A celery_worker.celery_app beat --loglevel=info
 ```
 
 ### Test
@@ -160,23 +178,26 @@ celery -A app.tasks.celery_app worker --loglevel=info --pool=solo
 
 ---
 
-## 📊 Performance
+## 📊 Features
 
-### Current Implementation (Phase 1 & 2)
+### Current Implementation (Phase 1, 2 & 3)
 - ✅ Quality preservation (95+ for lossy, lossless where possible)
 - ✅ Async processing with Celery
+- ✅ **Real-time progress with SSE** (Phase 3)
+- ✅ **Animated progress bars** (Phase 3)
+- ✅ **ZIP download for batch conversions** (Phase 3)
 - ✅ Automatic file cleanup
-- ✅ Progress tracking
 - ✅ Rate limiting (30 req/min)
 - ✅ CSRF protection
 - ✅ File validation (magic numbers)
+- ✅ Docker Compose deployment
 
-### Upcoming (Phase 3+)
-- 🔄 Real-time UI progress with SSE
-- 🔄 ZIP download for batch conversions
-- 🔄 Docker Compose deployment
+### Upcoming (Phase 4+)
 - 🔄 Nginx reverse proxy
-- 🔄 Production optimization
+- 🔄 SSL/HTTPS certificates
+- 🔄 Production monitoring
+- 🔄 Advanced image editing
+- 🔄 User accounts and history
 
 ---
 
@@ -222,10 +243,13 @@ Image_Converter/
 
 | Action | Command |
 |--------|---------|
+| Start with Docker | `docker-compose up -d` |
 | Start app (sync) | `python run.py` |
 | Start Redis | `docker run -d -p 6379:6379 --name redis redis:7-alpine` |
-| Start Celery worker | `celery -A app.tasks.celery_app worker --pool=solo --loglevel=info` |
-| Start Celery beat | `celery -A app.tasks.celery_app beat --loglevel=info` |
+| Start Celery worker | `celery -A celery_worker.celery_app worker --pool=solo --loglevel=info` |
+| Start Celery beat | `celery -A celery_worker.celery_app beat --loglevel=info` |
+| Docker logs | `docker-compose logs -f` |
+| Stop Docker | `docker-compose down` |
 | Run tests | `python test_async.py` |
 | Check health | `curl http://localhost:5000/health` |
 | View formats | `curl http://localhost:5000/formats` |

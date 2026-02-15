@@ -1,6 +1,7 @@
 """
 Celery worker entry point.
-Ensures proper Flask app context for Celery tasks.
+Initializes Flask app context for Celery tasks.
+Works with both local development and Docker deployment.
 """
 import os
 import sys
@@ -14,17 +15,19 @@ if project_root not in sys.path:
 from dotenv import load_dotenv
 load_dotenv()
 
-# Import Flask app to initialize context
+# Import Flask app and Celery app
 from app import create_app
+from app.tasks.celery_app import celery_app, init_celery
 
 # Create Flask app instance
-flask_app = create_app()
+flask_app = create_app(config_name=os.getenv('FLASK_ENV', 'development'))
 
-# Import Celery app (this will have Flask context available)
-from app.tasks.celery_app import celery_app
-
-# Push Flask app context for Celery tasks
-flask_app.app_context().push()
+# Initialize Celery with Flask context
+init_celery(flask_app)
 
 # Export celery_app for the worker
+# Start with: celery -A celery_worker.celery_app worker --loglevel=info
 __all__ = ['celery_app']
+
+if __name__ == '__main__':
+    celery_app.start()

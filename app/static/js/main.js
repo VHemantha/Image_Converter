@@ -244,9 +244,10 @@ function setupFormSubmit() {
             if (response.ok && result.success) {
                 // Check if this is an async response (Celery)
                 if (result.async) {
-                    // Poll for task completion
-                    showToast('Conversion started. Checking progress...', 'info');
-                    await pollTaskStatus(result.task_id);
+                    // Use SSE for real-time progress updates
+                    showToast('Conversion started. Streaming progress...', 'info');
+                    createProgressUI(result.task_id, result.total_files);
+                    await streamTaskProgress(result.task_id);
                 } else {
                     // Synchronous response - results ready immediately
                     displayResults(result);
@@ -269,10 +270,138 @@ function setupFormSubmit() {
 }
 
 /**
- * Poll task status for async conversions
+ * Create progress UI with animated progress bar
+ * Phase 3: Real-time visual feedback
+ */
+function createProgressUI(taskId, totalFiles) {
+    // Show results container
+    resultsContainer.classList.remove('hidden');
+    resultsContent.innerHTML = '';
+
+    // Create progress card
+    const progressCard = document.createElement('div');
+    progressCard.id = 'progress-card';
+    progressCard.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6';
+    progressCard.innerHTML = `
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                Converting Images...
+            </h3>
+            <div class="flex items-center space-x-2">
+                <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span id="progress-percentage" class="text-sm font-medium text-gray-600 dark:text-gray-400">0%</span>
+            </div>
+        </div>
+        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-3 overflow-hidden">
+            <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+        </div>
+        <p id="progress-status" class="text-sm text-gray-600 dark:text-gray-400">
+            Initializing conversion...
+        </p>
+    `;
+
+    resultsContent.appendChild(progressCard);
+    resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/**
+ * Update progress bar with current progress
+ */
+function updateProgress(progress, status) {
+    const progressBar = document.getElementById('progress-bar');
+    const progressPercentage = document.getElementById('progress-percentage');
+    const progressStatus = document.getElementById('progress-status');
+
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+    }
+    if (progressPercentage) {
+        progressPercentage.textContent = `${Math.round(progress)}%`;
+    }
+    if (progressStatus) {
+        progressStatus.textContent = status;
+    }
+}
+
+/**
+ * Stream task progress using Server-Sent Events (SSE)
+ * Phase 3: Real-time progress updates
+ */
+function streamTaskProgress(taskId) {
+    return new Promise((resolve, reject) => {
+        const eventSource = new EventSource(`/stream/${taskId}`);
+
+        eventSource.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+
+                if (data.state === 'SUCCESS') {
+                    // Task completed successfully
+                    updateProgress(100, 'Conversion complete!');
+                    eventSource.close();
+
+                    // Small delay for animation
+                    setTimeout(() => {
+                        displayResults(data.result);
+                        showToast(`Successfully converted ${data.result.successful} of ${data.result.total_files} images`, 'success');
+                        resolve();
+                    }, 500);
+
+                } else if (data.state === 'FAILURE') {
+                    // Task failed
+                    updateProgress(0, 'Conversion failed');
+                    eventSource.close();
+                    showToast(data.error || 'Conversion failed', 'error');
+                    reject(new Error(data.error));
+
+                } else if (data.state === 'PROGRESS') {
+                    // Update progress
+                    updateProgress(data.progress, data.status);
+
+                } else if (data.state === 'PENDING') {
+                    // Task waiting
+                    updateProgress(0, data.status || 'Waiting to start...');
+
+                } else if (data.state === 'TIMEOUT' || data.state === 'ERROR') {
+                    // Timeout or error
+                    eventSource.close();
+                    showToast(data.error || 'Task timeout', 'error');
+                    reject(new Error(data.error));
+                }
+
+            } catch (error) {
+                console.error('Error parsing SSE data:', error);
+            }
+        };
+
+        eventSource.onerror = (error) => {
+            console.error('SSE connection error:', error);
+            eventSource.close();
+
+            // Fallback to polling if SSE fails
+            console.log('SSE failed, falling back to polling...');
+            pollTaskStatus(taskId).then(resolve).catch(reject);
+        };
+
+        // Auto-close after 2 minutes
+        setTimeout(() => {
+            if (eventSource.readyState !== EventSource.CLOSED) {
+                eventSource.close();
+                reject(new Error('Connection timeout'));
+            }
+        }, 120000);
+    });
+}
+
+/**
+ * Fallback: Poll task status for async conversions
+ * Used when SSE is not available
  */
 async function pollTaskStatus(taskId) {
-    const maxAttempts = 60; // 60 seconds timeout
+    const maxAttempts = 60;
     let attempts = 0;
 
     while (attempts < maxAttempts) {
@@ -281,21 +410,18 @@ async function pollTaskStatus(taskId) {
             const status = await response.json();
 
             if (status.state === 'SUCCESS') {
-                // Task completed successfully
                 const taskResult = status.result;
+                updateProgress(100, 'Complete!');
                 displayResults(taskResult);
                 showToast(`Successfully converted ${taskResult.successful} of ${taskResult.total_files} images`, 'success');
                 return;
             } else if (status.state === 'FAILURE') {
-                // Task failed
                 showToast(status.error || 'Conversion failed', 'error');
                 return;
             } else if (status.state === 'PROGRESS') {
-                // Update progress (could add progress bar here)
-                console.log(`Progress: ${status.progress}% - ${status.status}`);
+                updateProgress(status.progress, status.status);
             }
 
-            // Wait 1 second before next poll
             await new Promise(resolve => setTimeout(resolve, 1000));
             attempts++;
 
@@ -306,7 +432,6 @@ async function pollTaskStatus(taskId) {
         }
     }
 
-    // Timeout
     showToast('Task timeout - please check results manually', 'error');
 }
 
@@ -316,12 +441,12 @@ async function pollTaskStatus(taskId) {
 function displayResults(result) {
     resultsContent.innerHTML = '';
 
-    // Create results summary
+    // Create results summary with download all button
     const summary = document.createElement('div');
     summary.className = 'bg-blue-100 dark:bg-blue-900 rounded-lg p-4 mb-4';
     summary.innerHTML = `
         <div class="flex items-center justify-between">
-            <div>
+            <div class="flex-1">
                 <p class="text-lg font-semibold text-blue-900 dark:text-blue-100">
                     Conversion Complete
                 </p>
@@ -329,9 +454,21 @@ function displayResults(result) {
                     ${result.successful} successful, ${result.failed} failed
                 </p>
             </div>
-            <svg class="h-12 w-12 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <div class="flex items-center space-x-3">
+                ${result.successful > 1 ? `
+                    <a href="/download-all/${result.task_id}"
+                       class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center space-x-2 shadow-sm"
+                       download>
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
+                        <span>Download All (ZIP)</span>
+                    </a>
+                ` : ''}
+                <svg class="h-12 w-12 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
         </div>
     `;
     resultsContent.appendChild(summary);
