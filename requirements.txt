@@ -34,3 +34,5 @@ pytest-flask==1.3.0
 # Security Scanning (development)
 bandit==1.7.5
 safety==2.3.5
+
+gunicorn==21.2.0
