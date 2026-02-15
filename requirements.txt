@@ -21,7 +21,7 @@ gunicorn==21.2.0
 gevent==23.9.1
 
 # File Type Detection
-python-magic-bin==0.4.14
+python-magic
 
 # Environment Variables
 python-dotenv==1.0.0
