@@ -343,6 +343,13 @@ def ready():
         return jsonify({'status': 'not ready', 'error': str(e)}), 503
 
 
+@bp.route('/ads.txt')
+def ads_txt():
+    """Serve ads.txt for Google AdSense verification."""
+    content = "google.com, pub-9172775909086222, DIRECT, f08c47fec0942fa0"
+    return Response(content, mimetype='text/plain')
+
+
 @bp.route('/formats')
 def formats():
     """Get supported format information."""
