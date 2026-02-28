@@ -11,7 +11,7 @@ import json
 import time
 from datetime import datetime
 
-from app.forms import UploadForm
+from app.forms import UploadForm, PdfUploadForm
 from app.utils.file_validator import (
     validate_file_comprehensive,
     FileValidationError,
@@ -24,6 +24,7 @@ from app.utils.image_converter import (
     ImageConversionError,
     calculate_file_sizes
 )
+from app.utils.pdf_converter import convert_images_to_pdf, PdfConversionError
 from app.task_manager import submit_conversion, get_task
 
 # Create blueprint
@@ -34,8 +35,14 @@ logger = logging.getLogger(__name__)
 
 
 @bp.route('/')
-def index():
-    """Home page with upload form."""
+def landing():
+    """Landing page showcasing all available tools."""
+    return render_template('landing.html')
+
+
+@bp.route('/image-converter')
+def image_converter():
+    """Image format converter page."""
     form = UploadForm()
     supported_formats = get_supported_formats()
     format_info = get_format_info()
@@ -46,6 +53,131 @@ def index():
         supported_formats=supported_formats,
         format_info=format_info
     )
+
+
+@bp.route('/image-to-pdf')
+def image_to_pdf_page():
+    """Image to PDF converter page."""
+    form = PdfUploadForm()
+    return render_template('image_to_pdf.html', form=form)
+
+
+@bp.route('/upload-pdf', methods=['POST'])
+def upload_pdf():
+    """Handle image uploads and convert them to a single PDF synchronously."""
+    form = PdfUploadForm()
+
+    if not form.validate_on_submit():
+        return jsonify({
+            'success': False,
+            'error': 'Form validation failed',
+            'errors': form.errors
+        }), 400
+
+    try:
+        files = request.files.getlist('files')
+
+        if not files or len(files) == 0:
+            return jsonify({'success': False, 'error': 'No files uploaded'}), 400
+
+        task_id = str(uuid.uuid4())
+        image_paths = []
+
+        for file in files:
+            if not file or file.filename == '':
+                continue
+
+            try:
+                validate_file_comprehensive(
+                    file,
+                    file.filename,
+                    current_app.config['MAX_CONTENT_LENGTH'],
+                    current_app.config['ALLOWED_EXTENSIONS']
+                )
+
+                sanitized_name = sanitize_filename(file.filename, task_id)
+                input_path = os.path.join(current_app.config['UPLOAD_FOLDER'], sanitized_name)
+                file.save(input_path)
+                image_paths.append(input_path)
+
+            except FileValidationError as e:
+                logger.error(f"Validation error for {file.filename}: {str(e)}")
+                return jsonify({
+                    'success': False,
+                    'error': f'Validation failed for {file.filename}: {str(e)}'
+                }), 400
+
+        if not image_paths:
+            return jsonify({'success': False, 'error': 'No valid images to process'}), 400
+
+        output_filename = f"{task_id}_converted.pdf"
+        output_path = os.path.join(current_app.config['CONVERTED_FOLDER'], output_filename)
+
+        result = convert_images_to_pdf(image_paths, output_path)
+
+        # Delete source images immediately after PDF is created (same as image converter)
+        for img_path in image_paths:
+            try:
+                if os.path.exists(img_path):
+                    os.remove(img_path)
+            except Exception as e:
+                logger.warning(f"Could not delete source image {img_path}: {e}")
+
+        download_url = f"/download-pdf/{task_id}/{output_filename}"
+
+        return jsonify({
+            'success': True,
+            'download_url': download_url,
+            'page_count': result['page_count'],
+            'file_size': result['file_size'],
+        })
+
+    except PdfConversionError as e:
+        # Clean up any saved source images on failure
+        for img_path in image_paths:
+            try:
+                if os.path.exists(img_path):
+                    os.remove(img_path)
+            except Exception:
+                pass
+        logger.error(f"PDF conversion error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+    except Exception as e:
+        # Clean up any saved source images on failure
+        for img_path in image_paths:
+            try:
+                if os.path.exists(img_path):
+                    os.remove(img_path)
+            except Exception:
+                pass
+        logger.error(f"Error in upload_pdf endpoint: {str(e)}")
+        return jsonify({'success': False, 'error': 'An error occurred during PDF conversion'}), 500
+
+
+@bp.route('/download-pdf/<task_id>/<filename>')
+def download_pdf(task_id, filename):
+    """Download a converted PDF file."""
+    try:
+        safe_filename = os.path.basename(filename)
+
+        if not safe_filename.startswith(task_id):
+            return jsonify({'success': False, 'error': 'Invalid file request'}), 403
+
+        file_path = os.path.join(current_app.config['CONVERTED_FOLDER'], safe_filename)
+
+        if not os.path.exists(file_path):
+            return jsonify({'success': False, 'error': 'File not found on server'}), 404
+
+        return send_file(
+            file_path,
+            as_attachment=True,
+            download_name='converted.pdf',
+            mimetype='application/pdf'
+        )
+
+    except Exception as e:
+        logger.error(f"Error downloading PDF: {str(e)}")
+        return jsonify({'success': False, 'error': f'Error downloading file: {str(e)}'}), 500
 
 
 @bp.route('/upload', methods=['POST'])

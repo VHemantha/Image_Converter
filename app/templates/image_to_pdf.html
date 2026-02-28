@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+
+{% block title %}Image to PDF Converter - Convert JPG, PNG, WebP to PDF Free Online{% endblock %}
+{% block meta_title %}Image to PDF Converter - Convert JPG, PNG, WebP to PDF Free Online{% endblock %}
+{% block meta_description %}Convert images to PDF online free. Merge JPG, PNG, WebP, TIFF, AVIF, HEIC images into a single PDF document. No signup, no watermarks, instant download.{% endblock %}
+{% block og_title %}Image to PDF Converter - Free Online Tool{% endblock %}
+{% block og_description %}Convert and merge JPG, PNG, WebP, TIFF, HEIC images into PDF documents. Fast, secure, free — no registration needed.{% endblock %}
+{% block twitter_title %}Image to PDF Converter - Free Online{% endblock %}
+{% block twitter_description %}Convert JPG, PNG, WebP, TIFF, HEIC images to PDF online. Merge multiple images into one PDF. Free, no watermarks.{% endblock %}
+
+{% block extra_head %}
+<meta name="keywords" content="image to pdf, jpg to pdf, png to pdf, convert image to pdf, images to pdf converter, merge images to pdf, heic to pdf, webp to pdf, tiff to pdf, free image to pdf converter online">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-red-600 to-rose-700 dark:from-red-900 dark:to-rose-900 text-white py-14 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-6 text-red-200 text-sm" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+                <li><a href="{{ url_for('main.landing') }}" class="hover:text-white transition-colors">Home</a></li>
+                <li><span class="mx-1">/</span></li>
+                <li class="text-white font-medium">Image to PDF Converter</li>
+            </ol>
+        </nav>
+        <div class="text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Convert Images to PDF Online Free
+            </h1>
+            <p class="text-xl md:text-2xl text-red-100 mb-6 max-w-3xl mx-auto">
+                Turn JPG, PNG, WebP, TIFF, AVIF, and HEIC images into a professional PDF document. Merge multiple images into one PDF instantly.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm">
+                <div class="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full">
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    <span>100% Free</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full">
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    <span>No Watermarks</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full">
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    <span>Secure &amp; Private</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full">
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    <span>No Registration</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Converter Section -->
+<section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-10 transition-colors duration-200">
+
+        <form id="pdfForm" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <!-- Drop Zone -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Select Images to Convert to PDF
+                </label>
+                <div id="pdfDropZone"
+                     class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-10 text-center hover:border-red-500 dark:hover:border-red-400 transition-colors cursor-pointer">
+                    <svg class="mx-auto h-14 w-14 text-gray-400 dark:text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-2 font-medium">
+                        Drag and drop your images here
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">
+                        JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, HEIC &bull; Up to 50 MB per file
+                    </p>
+                    {{ form.files(class="hidden", id="pdfFileInput", accept="image/*", multiple=True) }}
+                    <button type="button"
+                            onclick="document.getElementById('pdfFileInput').click()"
+                            class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
+                        Choose Images
+                    </button>
+                </div>
+            </div>
+
+            <!-- File Preview Grid -->
+            <div id="pdfFilePreviewContainer" class="hidden mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base font-semibold text-gray-900 dark:text-white">
+                        Selected Images <span id="pdfFileCount" class="text-gray-500 dark:text-gray-400 font-normal text-sm"></span>
+                    </h3>
+                    <button type="button" onclick="clearAllFiles()"
+                            class="text-sm text-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors">
+                        Clear all
+                    </button>
+                </div>
+                <div id="pdfFilePreviewGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Previews inserted by JS -->
+                </div>
+            </div>
+
+            <!-- Info box when files are selected -->
+            <div id="pdfInfoBox" class="hidden mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-xl p-4">
+                <div class="flex items-start space-x-3">
+                    <svg class="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="text-sm text-red-700 dark:text-red-300">
+                        Each image will become one page in the PDF, in the order shown above. Click <strong>Convert to PDF</strong> when ready.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Convert Button -->
+            <div class="text-center">
+                <button type="button" id="pdfConvertBtn"
+                        class="px-10 py-4 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold text-lg rounded-xl shadow-md transition-colors"
+                        disabled>
+                    <span id="pdfConvertBtnText">Convert to PDF</span>
+                    <svg id="pdfConvertBtnSpinner"
+                         class="hidden inline-block ml-2 h-5 w-5 animate-spin"
+                         fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- Results Container -->
+        <div id="pdfResultsContainer" class="hidden mt-8">
+            <!-- Filled by JS -->
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="pdfToast" class="hidden fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 text-white">
+            <p id="pdfToastMessage"></p>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+            Why Use Our Image to PDF Converter?
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm transition-colors duration-200">
+                <div class="text-red-600 dark:text-red-400 mb-4">
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Merge Multiple Images</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">Combine any number of images into a single multi-page PDF document. Each image becomes one page, in the exact order you select.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm transition-colors duration-200">
+                <div class="text-red-600 dark:text-red-400 mb-4">
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Wide Format Support</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">Convert JPG, JPEG, PNG, WebP, AVIF, TIFF, BMP, GIF, HEIC, and HEIF images to PDF. Works with any image type, including iPhone HEIC photos.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm transition-colors duration-200">
+                <div class="text-red-600 dark:text-red-400 mb-4">
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Secure &amp; Private</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">Your images are processed on secure servers and automatically deleted after you download the PDF. We never store or share your files.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm transition-colors duration-200">
+                <div class="text-red-600 dark:text-red-400 mb-4">
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">High Quality PDF</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">Images are embedded in the PDF at high resolution, preserving their visual quality. No compression artifacts, no quality loss.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm transition-colors duration-200">
+                <div class="text-red-600 dark:text-red-400 mb-4">
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Instant Download</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">Download your PDF immediately after conversion — no email required, no waiting. The PDF is ready in seconds.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm transition-colors duration-200">
+                <div class="text-red-600 dark:text-red-400 mb-4">
+                    <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Always Free</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">Convert images to PDF for free, forever. No subscriptions, no file limits, no hidden costs. Just a free, useful tool.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How to Use Section -->
+<section class="py-16 bg-white dark:bg-gray-800 transition-colors duration-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+            How to Convert Images to PDF
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-red-600 text-white rounded-full flex items-center justify-center text-xl font-bold mb-5 shadow-lg">1</div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Upload Your Images</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Click <strong>Choose Images</strong> or drag and drop your photos into the converter. You can select multiple images at once. Supported formats: JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, and HEIC.</p>
+            </div>
+            <div class="flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-red-600 text-white rounded-full flex items-center justify-center text-xl font-bold mb-5 shadow-lg">2</div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Click Convert to PDF</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Once your images are selected and previewed, click <strong>Convert to PDF</strong>. Our tool will merge all your images into a single PDF document, one image per page, in the order you selected them.</p>
+            </div>
+            <div class="flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-red-600 text-white rounded-full flex items-center justify-center text-xl font-bold mb-5 shadow-lg">3</div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Download Your PDF</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Click the <strong>Download PDF</strong> button that appears after conversion. Your PDF is saved to your device. The file is then automatically deleted from our servers.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Also Try Section -->
+<section class="py-12 bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <p class="text-gray-500 dark:text-gray-400 mb-4 text-sm font-medium uppercase tracking-wide">Also Available</p>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Need to Convert Between Image Formats?</h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">Use our Image Format Converter to convert between JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, ICO, and HEIC formats with batch processing support.</p>
+        <a href="{{ url_for('main.image_converter') }}"
+           class="inline-flex items-center px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors">
+            <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Try Image Format Converter
+        </a>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section id="faq" class="py-20 bg-white dark:bg-gray-800 transition-colors duration-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-14">
+            Image to PDF — Frequently Asked Questions
+        </h2>
+        <div class="space-y-6">
+            <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-6 transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">How do I convert a JPG to PDF?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Click "Choose Images", select your JPG file, then click "Convert to PDF". Your JPG will be converted to a single-page PDF document, ready to download instantly.</p>
+            </div>
+            <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-6 transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Can I merge multiple images into one PDF?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Yes. Select multiple images (JPG, PNG, WebP, or any supported format), and our tool will combine them all into a single multi-page PDF. Each image becomes one page in the order you selected them.</p>
+            </div>
+            <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-6 transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">What image formats can be converted to PDF?</h3>
+                <p class="text-gray-600 dark:text-gray-300">We support JPG, JPEG, PNG, WebP, AVIF, TIFF, TIF, BMP, GIF, HEIC, and HEIF. This covers virtually every common image format, including iPhone photos.</p>
+            </div>
+            <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-6 transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Is the PDF quality good?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Yes. Images are embedded in the PDF at 100 DPI resolution, preserving their visual quality. The output is suitable for viewing, sharing, printing, and archiving.</p>
+            </div>
+            <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-6 transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Is there a file size limit?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Each individual image file can be up to 50 MB. You can upload as many images as you need. Very large images may take a few seconds to process.</p>
+            </div>
+            <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-6 transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">How long are my files kept on the server?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Files are kept temporarily during processing and for a short period after (up to 60 minutes) to allow download. They are then automatically and permanently deleted from our servers.</p>
+            </div>
+            <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-6 transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Can I convert iPhone HEIC photos to PDF?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Yes. HEIC and HEIF — the default photo formats on iPhones and iPads — are fully supported. Simply select your HEIC files and convert them to PDF just like any other image format.</p>
+            </div>
+            <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-6 transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Do I need to install any software?</h3>
+                <p class="text-gray-600 dark:text-gray-300">No software installation needed. Our image to PDF converter works entirely in your web browser on any device — desktop, laptop, tablet, or smartphone. Works on Windows, Mac, Linux, iOS, and Android.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Image to PDF Converter",
+      "url": "{{ request.url }}",
+      "description": "Convert JPG, PNG, WebP, TIFF, AVIF, HEIC images to PDF online free. Merge multiple images into a single PDF document.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": "Image to PDF conversion, Multi-image PDF merging, JPG to PDF, PNG to PDF, HEIC to PDF, Free PDF converter, No watermarks, Secure file processing"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ request.url_root }}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image to PDF Converter",
+          "item": "{{ request.url }}"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I convert a JPG to PDF?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Click Choose Images, select your JPG file, then click Convert to PDF. Your JPG will be converted to a PDF document ready to download instantly." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I merge multiple images into one PDF?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Select multiple images and our tool will combine them into a single multi-page PDF, one image per page in the order selected." }
+        },
+        {
+          "@type": "Question",
+          "name": "What image formats can be converted to PDF?",
+          "acceptedAnswer": { "@type": "Answer", "text": "We support JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, HEIC, and HEIF formats." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I convert iPhone HEIC photos to PDF?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. HEIC and HEIF formats from iPhones and iPads are fully supported. Convert your iPhone photos to PDF just like any other image." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/pdf_converter.js') }}" defer></script>
+{% endblock %}

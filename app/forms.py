@@ -94,3 +94,39 @@ class SingleUploadForm(FlaskForm):
         ],
         validators=[DataRequired()]
     )
+
+
+class PdfUploadForm(FlaskForm):
+    """Form for uploading images to convert to a PDF document."""
+
+    files = MultipleFileField(
+        'Image Files',
+        validators=[FileRequired(message='Please select at least one image file.')]
+    )
+
+    def validate_files(self, field):
+        """Validate uploaded image files for PDF conversion."""
+        if not field.data:
+            raise ValidationError('Please select at least one file')
+
+        allowed_extensions = {
+            'jpg', 'jpeg', 'png', 'webp', 'avif',
+            'tiff', 'tif', 'bmp', 'gif', 'heic', 'heif'
+        }
+
+        for file in field.data:
+            if not isinstance(file, FileStorage):
+                continue
+
+            if not file.filename:
+                raise ValidationError('One or more files have no filename')
+
+            if '.' not in file.filename:
+                raise ValidationError(f'File "{file.filename}" has no extension')
+
+            ext = file.filename.rsplit('.', 1)[1].lower()
+            if ext not in allowed_extensions:
+                raise ValidationError(
+                    f'File "{file.filename}" is not a supported image format. '
+                    f'Supported: JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, HEIC'
+                )

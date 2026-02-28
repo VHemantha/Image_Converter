@@ -4,6 +4,14 @@
 <!-- Hero Section -->
 <section class="bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-800 dark:to-blue-900 text-white py-16 transition-colors duration-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-6 text-blue-200 text-sm" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+                <li><a href="{{ url_for('main.landing') }}" class="hover:text-white transition-colors">Home</a></li>
+                <li><span class="mx-1">/</span></li>
+                <li class="text-white font-medium">Image Format Converter</li>
+            </ol>
+        </nav>
         <div class="text-center">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">
                 Free Online Image Converter

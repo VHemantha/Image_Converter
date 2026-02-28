@@ -1,9 +1,9 @@
 """
 File validation utilities with security-focused checks.
 Implements magic number verification, file size limits, and sanitization.
+Uses pure-Python byte-signature detection (no libmagic / python-magic required).
 """
 import os
-import magic
 from PIL import Image
 from werkzeug.utils import secure_filename
 import uuid
@@ -41,9 +41,60 @@ class FileValidationError(Exception):
     pass
 
 
+def _detect_mime_from_bytes(header: bytes) -> str:
+    """
+    Detect image MIME type purely from file header bytes.
+    No native libraries required — works on all platforms.
+    """
+    if len(header) < 4:
+        return 'application/octet-stream'
+
+    # JPEG: FF D8 FF
+    if header[:3] == b'\xFF\xD8\xFF':
+        return 'image/jpeg'
+
+    # PNG: 89 50 4E 47 0D 0A 1A 0A
+    if header[:8] == b'\x89PNG\r\n\x1a\n':
+        return 'image/png'
+
+    # GIF87a / GIF89a
+    if header[:6] in (b'GIF87a', b'GIF89a'):
+        return 'image/gif'
+
+    # BMP: BM
+    if header[:2] == b'BM':
+        return 'image/bmp'
+
+    # TIFF: little-endian II*\x00 or big-endian MM\x00*
+    if header[:4] in (b'II*\x00', b'MM\x00*'):
+        return 'image/tiff'
+
+    # WebP: RIFF????WEBP
+    if header[:4] == b'RIFF' and len(header) >= 12 and header[8:12] == b'WEBP':
+        return 'image/webp'
+
+    # ICO: \x00\x00\x01\x00
+    if header[:4] == b'\x00\x00\x01\x00':
+        return 'image/x-icon'
+
+    # HEIC / HEIF / AVIF — all use the ISO Base Media File Format (ftyp box)
+    # Structure: [4-byte size][ftyp][4-byte major brand][...]
+    if len(header) >= 12 and header[4:8] == b'ftyp':
+        brand = header[8:12]
+        avif_brands = {b'avif', b'avis'}
+        heic_brands = {b'heic', b'heis', b'hevc', b'hevx', b'heim',
+                       b'hevm', b'mif1', b'msf1'}
+        if brand in avif_brands:
+            return 'image/avif'
+        if brand in heic_brands:
+            return 'image/heic'
+
+    return 'application/octet-stream'
+
+
 def validate_file_magic(file, max_bytes=2048):
     """
-    Validate file type using magic number (file signature).
+    Validate file type using pure-Python magic number (file signature) detection.
 
     Args:
         file: File object to validate
@@ -56,18 +107,14 @@ def validate_file_magic(file, max_bytes=2048):
         FileValidationError: If file type is not allowed
     """
     try:
-        # Read initial bytes for magic number detection
         file_header = file.read(max_bytes)
         file.seek(0)  # Reset file pointer
 
         if not file_header:
             raise FileValidationError("Empty file or unable to read file")
 
-        # Detect MIME type using python-magic
-        mime = magic.Magic(mime=True)
-        detected_mime = mime.from_buffer(file_header)
+        detected_mime = _detect_mime_from_bytes(file_header)
 
-        # Check if MIME type is allowed
         if detected_mime not in ALLOWED_MIME_TYPES:
             raise FileValidationError(
                 f"File type '{detected_mime}' is not allowed. "

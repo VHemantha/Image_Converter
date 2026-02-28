@@ -1,0 +1,870 @@
+{% extends "base.html" %}
+
+{% block title %}Free Online Image Tools - Convert Images & Images to PDF | Image Converter Pro{% endblock %}
+{% block meta_title %}Free Online Image Tools - Convert Images & Images to PDF | Image Converter Pro{% endblock %}
+{% block meta_description %}Totally free image converter with no watermarks and no registration. Convert PNG to JPG, JPG to PNG, JPG to WebP, HEIC to JPG, images to PDF and 9+ formats online. Free forever.{% endblock %}
+{% block og_title %}Free Online Image Tools - Image Converter & Image to PDF{% endblock %}
+{% block og_description %}Convert images between 9+ formats or turn images into PDF documents. Fast, secure, completely free — no signup, no watermarks.{% endblock %}
+{% block twitter_title %}Free Online Image Tools - Image Converter & Image to PDF{% endblock %}
+{% block twitter_description %}Convert images between 9+ formats or turn images into PDF documents. Fast, secure, completely free.{% endblock %}
+
+{% block extra_head %}
+<meta name="keywords" content="free image converter, totally free image converter, free image converter without watermark, free online image converter no watermark, free image converter no registration, free png to jpg converter, free jpg to png converter, free heic to jpg converter, free jpg to webp converter, free png to webp converter, free image to pdf converter, free jpg to pdf, free png to pdf, free images converter, free online image tools, image converter, image to pdf, png to jpg, jpg to png, convert png to jpg, convert jpg to png, jpg to webp, png to webp, convert to webp, webp converter, heic to jpg, heic to png, convert heic to jpg, jpg to pdf, png to pdf, webp to pdf, convert images to pdf, image to pdf converter, bmp to jpg, tiff to jpg, gif to jpg, avif converter, avif to jpg, avif to png, online image converter, convert images online, image format converter, batch image converter, convert images for free">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 dark:from-blue-900 dark:via-blue-900 dark:to-indigo-900 text-white py-20 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+            Free Online Image<br>
+            <span class="text-blue-200">Conversion Tools</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
+            Totally free image converter — no watermarks, no registration, no limits.
+            Convert PNG to JPG, JPG to WebP, HEIC to JPG, images to PDF and more, instantly.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="{{ url_for('main.image_converter') }}"
+               class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-700 font-bold rounded-xl shadow-lg hover:bg-blue-50 transition-all duration-200 text-lg">
+                <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Convert Image Format
+            </a>
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="inline-flex items-center justify-center px-8 py-4 bg-red-500 text-white font-bold rounded-xl shadow-lg hover:bg-red-400 transition-all duration-200 text-lg">
+                <svg class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                Images to PDF
+            </a>
+        </div>
+
+        <!-- Trust signals -->
+        <div class="mt-12 flex flex-wrap justify-center gap-6 text-blue-200 text-sm">
+            <div class="flex items-center space-x-2">
+                <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>100% Free</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>No Registration</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>No Watermarks</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>Files Auto-Deleted</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Free & No Watermark Promise Section -->
+<section class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 py-10 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                Totally Free Image Converter &mdash; No Watermarks, No Catch
+            </h2>
+            <p class="mt-3 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Unlike many online converters, Image Converter Pro is <strong>100% free forever</strong>.
+                No account, no hidden fees, no watermarks on your files — ever.
+            </p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="flex flex-col items-center text-center p-4">
+                <div class="w-14 h-14 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center mb-3">
+                    <svg class="h-7 w-7 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="font-bold text-gray-900 dark:text-white text-base mb-1">Always Free</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Convert unlimited images at no cost. No subscription, no credit card.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4">
+                <div class="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center mb-3">
+                    <svg class="h-7 w-7 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                    </svg>
+                </div>
+                <h3 class="font-bold text-gray-900 dark:text-white text-base mb-1">Zero Watermarks</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Your converted images are clean and unmarked. What you upload is what you get.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4">
+                <div class="w-14 h-14 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center mb-3">
+                    <svg class="h-7 w-7 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <h3 class="font-bold text-gray-900 dark:text-white text-base mb-1">No Registration</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">No account, no email, no sign-up form. Just open, upload, and convert.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4">
+                <div class="w-14 h-14 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center mb-3">
+                    <svg class="h-7 w-7 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h3 class="font-bold text-gray-900 dark:text-white text-base mb-1">Files Auto-Deleted</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Your images are deleted from our servers after 1 hour. Private and secure.</p>
+            </div>
+        </div>
+
+        <!-- Comparison table -->
+        <div class="mt-10 max-w-3xl mx-auto">
+            <h3 class="text-center text-lg font-semibold text-gray-800 dark:text-gray-200 mb-5">How We Compare to Other Free Image Converters</h3>
+            <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        <tr>
+                            <th class="px-5 py-3 font-semibold">Feature</th>
+                            <th class="px-5 py-3 font-semibold text-center text-blue-600 dark:text-blue-400">Image Converter Pro</th>
+                            <th class="px-5 py-3 font-semibold text-center text-gray-500">Others</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700 bg-white dark:bg-gray-800">
+                        <tr>
+                            <td class="px-5 py-3 text-gray-700 dark:text-gray-300">Completely Free</td>
+                            <td class="px-5 py-3 text-center text-green-600 font-bold">&#10003; Yes</td>
+                            <td class="px-5 py-3 text-center text-gray-400">Limited free tier</td>
+                        </tr>
+                        <tr>
+                            <td class="px-5 py-3 text-gray-700 dark:text-gray-300">No Watermarks</td>
+                            <td class="px-5 py-3 text-center text-green-600 font-bold">&#10003; Never</td>
+                            <td class="px-5 py-3 text-center text-gray-400">Often watermarked</td>
+                        </tr>
+                        <tr>
+                            <td class="px-5 py-3 text-gray-700 dark:text-gray-300">No Registration Required</td>
+                            <td class="px-5 py-3 text-center text-green-600 font-bold">&#10003; None needed</td>
+                            <td class="px-5 py-3 text-center text-gray-400">Account required</td>
+                        </tr>
+                        <tr>
+                            <td class="px-5 py-3 text-gray-700 dark:text-gray-300">Supports 9+ Formats</td>
+                            <td class="px-5 py-3 text-center text-green-600 font-bold">&#10003; JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, ICO, HEIC</td>
+                            <td class="px-5 py-3 text-center text-gray-400">3–5 formats</td>
+                        </tr>
+                        <tr>
+                            <td class="px-5 py-3 text-gray-700 dark:text-gray-300">Images to PDF</td>
+                            <td class="px-5 py-3 text-center text-green-600 font-bold">&#10003; Included free</td>
+                            <td class="px-5 py-3 text-center text-gray-400">Paid feature</td>
+                        </tr>
+                        <tr>
+                            <td class="px-5 py-3 text-gray-700 dark:text-gray-300">Files Auto-Deleted</td>
+                            <td class="px-5 py-3 text-center text-green-600 font-bold">&#10003; After 1 hour</td>
+                            <td class="px-5 py-3 text-center text-gray-400">Unknown retention</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tools Section -->
+<section id="tools" class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                Our Free Image Conversion Tools
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Choose the tool that fits your needs. Both are completely free, require no account, and process your files securely.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+            <!-- Tool 1: Image Format Converter -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden transition-colors duration-200 flex flex-col">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-700 p-8 text-white">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="bg-white/20 p-3 rounded-xl">
+                            <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Image Format Converter</h3>
+                            <p class="text-blue-200">Convert between 9+ image formats</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 text-base leading-relaxed">
+                        Convert your images between JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, ICO, and HEIC formats. Batch convert multiple files simultaneously with real-time progress tracking and high-quality output.
+                    </p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Supports <strong>9 formats</strong>: JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, ICO, HEIC</span>
+                        </li>
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span><strong>Batch convert</strong> multiple images at once</span>
+                        </li>
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Real-time <strong>progress tracking</strong></span>
+                        </li>
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>HEIC from iPhone? <strong>No problem.</strong></span>
+                        </li>
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Up to <strong>50 MB</strong> per file, no limits on count</span>
+                        </li>
+                    </ul>
+                    <div class="mt-auto">
+                        <a href="{{ url_for('main.image_converter') }}"
+                           class="block w-full text-center px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors text-lg">
+                            Start Converting Images &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool 2: Image to PDF Converter -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden transition-colors duration-200 flex flex-col">
+                <div class="bg-gradient-to-r from-red-500 to-rose-700 p-8 text-white">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="bg-white/20 p-3 rounded-xl">
+                            <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Image to PDF Converter</h3>
+                            <p class="text-red-200">Merge images into a single PDF</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 text-base leading-relaxed">
+                        Combine one or multiple images into a professional PDF document. Perfect for digitizing photos, creating portfolios, sending documents by email, or archiving pictures. Supports JPG, PNG, WebP, TIFF, and HEIC.
+                    </p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span><strong>Merge multiple images</strong> into one PDF document</span>
+                        </li>
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Supports <strong>JPG, PNG, WebP, TIFF, HEIC</strong> and more</span>
+                        </li>
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Preserves <strong>original image quality</strong></span>
+                        </li>
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span><strong>Instant download</strong> — no email required</span>
+                        </li>
+                        <li class="flex items-start space-x-3 text-gray-700 dark:text-gray-300">
+                            <svg class="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Convert <strong>iPhone HEIC photos</strong> to PDF</span>
+                        </li>
+                    </ul>
+                    <div class="mt-auto">
+                        <a href="{{ url_for('main.image_to_pdf_page') }}"
+                           class="block w-full text-center px-6 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-colors text-lg">
+                            Convert Images to PDF &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section id="features" class="py-20 bg-white dark:bg-gray-800 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                Why Choose Image Converter Pro?
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Built with speed, security, and simplicity in mind — so you can focus on getting things done.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Security -->
+            <div class="flex items-start space-x-4 p-6 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-200">
+                <div class="flex-shrink-0 bg-blue-100 dark:bg-blue-900 p-3 rounded-lg">
+                    <svg class="h-7 w-7 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">100% Secure Processing</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">All files are processed on our secure servers and automatically deleted after download. We never store or share your images.</p>
+                </div>
+            </div>
+            <!-- Speed -->
+            <div class="flex items-start space-x-4 p-6 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-200">
+                <div class="flex-shrink-0 bg-yellow-100 dark:bg-yellow-900 p-3 rounded-lg">
+                    <svg class="h-7 w-7 text-yellow-600 dark:text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Lightning Fast</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Optimized conversion engine with real-time progress tracking. Batch convert multiple files simultaneously without waiting.</p>
+                </div>
+            </div>
+            <!-- Quality -->
+            <div class="flex items-start space-x-4 p-6 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-200">
+                <div class="flex-shrink-0 bg-purple-100 dark:bg-purple-900 p-3 rounded-lg">
+                    <svg class="h-7 w-7 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">High Quality Output</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Lossless conversion for PNG and TIFF. 95+ quality for JPEG and WebP. Your images retain their visual fidelity.</p>
+                </div>
+            </div>
+            <!-- Free -->
+            <div class="flex items-start space-x-4 p-6 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-200">
+                <div class="flex-shrink-0 bg-green-100 dark:bg-green-900 p-3 rounded-lg">
+                    <svg class="h-7 w-7 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Completely Free</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">No hidden costs, subscriptions, or premium tiers. All features are available to everyone for free, always.</p>
+                </div>
+            </div>
+            <!-- Cross-platform -->
+            <div class="flex items-start space-x-4 p-6 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-200">
+                <div class="flex-shrink-0 bg-indigo-100 dark:bg-indigo-900 p-3 rounded-lg">
+                    <svg class="h-7 w-7 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Works on Any Device</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Use on any device — desktop, tablet, or phone. Works on Windows, Mac, Linux, iOS, and Android. No app to install.</p>
+                </div>
+            </div>
+            <!-- No watermarks -->
+            <div class="flex items-start space-x-4 p-6 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-200">
+                <div class="flex-shrink-0 bg-red-100 dark:bg-red-900 p-3 rounded-lg">
+                    <svg class="h-7 w-7 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Zero Watermarks</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Download clean, watermark-free files every time. What you upload is what you get — just in the format you need.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                How to Convert Images Online in 3 Easy Steps
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                No software to install, no account needed. Just upload, convert, and download.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Step 1 -->
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-full text-2xl font-bold mb-6 shadow-lg">1</div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Upload Your Images</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Drag and drop your image files onto the tool, or click to browse your device. Supports JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, ICO, and HEIC up to 50 MB each.
+                </p>
+            </div>
+            <!-- Step 2 -->
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-full text-2xl font-bold mb-6 shadow-lg">2</div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Select Output Format</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Choose your target format — whether that's another image format (PNG, WebP, AVIF&hellip;) or a PDF document. Then click the convert button.
+                </p>
+            </div>
+            <!-- Step 3 -->
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-full text-2xl font-bold mb-6 shadow-lg">3</div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Download Results</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Download your converted files instantly. For the image converter, download individually or grab all files in a ZIP. Files are auto-deleted from our servers for your privacy.
+                </p>
+            </div>
+        </div>
+        <div class="text-center mt-12">
+            <a href="{{ url_for('main.image_converter') }}" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors mr-4">
+                Try Image Converter
+            </a>
+            <a href="{{ url_for('main.image_to_pdf_page') }}" class="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors">
+                Try Image to PDF
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Supported Formats Section -->
+<section class="py-16 bg-white dark:bg-gray-800 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-10">
+            Supported Image Formats
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {% for fmt, label, desc in [
+                ('JPEG/JPG', 'JPEG / JPG', 'Best for photographs'),
+                ('PNG', 'PNG', 'Lossless with transparency'),
+                ('WebP', 'WebP', 'Modern web format'),
+                ('AVIF', 'AVIF', 'Next-gen compression'),
+                ('TIFF', 'TIFF', 'Professional quality'),
+                ('BMP', 'BMP', 'Uncompressed bitmap'),
+                ('GIF', 'GIF', 'Animation support'),
+                ('ICO', 'ICO', 'Icon format'),
+                ('HEIC', 'HEIC', 'iPhone photos'),
+                ('PDF', 'PDF', 'Document output')
+            ] %}
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 text-center transition-colors duration-200">
+                <p class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ label }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ desc }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Popular Conversions Section -->
+<section id="conversions" class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                Popular Image Conversions
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Quick access to the most searched image format conversions — all free, all instant.
+            </p>
+        </div>
+
+        <!-- Image Format Conversions -->
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-5 flex items-center">
+            <svg class="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Image Format Conversions
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+
+            <!-- PNG to JPG -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">PNG to JPG</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert PNG images to JPG format. Reduce file size while maintaining excellent visual quality.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert PNG to JPG &rarr;</span>
+            </a>
+
+            <!-- JPG to PNG -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">JPG to PNG</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert JPG to PNG for lossless quality and transparency support. Ideal for logos and graphics.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert JPG to PNG &rarr;</span>
+            </a>
+
+            <!-- JPG to WebP -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">JPG to WebP</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert JPG to WebP to reduce image size by up to 30% for faster websites without quality loss.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert JPG to WebP &rarr;</span>
+            </a>
+
+            <!-- PNG to WebP -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">PNG to WebP</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert PNG to WebP for superior web compression. Keeps transparency and significantly reduces file size.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert PNG to WebP &rarr;</span>
+            </a>
+
+            <!-- WebP to JPG -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">WebP to JPG</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert WebP images to JPG for compatibility with apps, devices, and systems that don't support WebP.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert WebP to JPG &rarr;</span>
+            </a>
+
+            <!-- HEIC to JPG -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">HEIC to JPG</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert iPhone HEIC photos to JPG. Make your Apple photos compatible with any device, app, or website.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert HEIC to JPG &rarr;</span>
+            </a>
+
+            <!-- HEIC to PNG -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">HEIC to PNG</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert HEIC photos to PNG for lossless quality. Great for editing iPhone photos in design tools.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert HEIC to PNG &rarr;</span>
+            </a>
+
+            <!-- AVIF to JPG -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">AVIF to JPG</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert AVIF images to JPG for broad compatibility. AVIF is great for the web but not universally supported yet.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert AVIF to JPG &rarr;</span>
+            </a>
+
+            <!-- BMP to JPG -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">BMP to JPG</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert large uncompressed BMP files to JPG. Dramatically reduce file size while keeping good image quality.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert BMP to JPG &rarr;</span>
+            </a>
+
+            <!-- TIFF to JPG -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">TIFF to JPG</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert TIFF images to JPG for easy sharing and uploading. TIFF files are large — JPG makes them web-friendly.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert TIFF to JPG &rarr;</span>
+            </a>
+
+            <!-- JPG to AVIF -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">JPG to AVIF</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert JPG to AVIF for next-generation web performance. AVIF offers better quality at smaller file sizes than JPG or WebP.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert JPG to AVIF &rarr;</span>
+            </a>
+
+            <!-- GIF to PNG -->
+            <a href="{{ url_for('main.image_converter') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">GIF to PNG</span>
+                    <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert GIF frames to PNG images. Extract high-quality static images from animated GIF files.</p>
+                <span class="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">Convert GIF to PNG &rarr;</span>
+            </a>
+
+        </div>
+
+        <!-- Image to PDF Conversions -->
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-5 flex items-center">
+            <svg class="h-5 w-5 mr-2 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            Convert Images to PDF
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+            <!-- JPG to PDF -->
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">JPG to PDF</span>
+                    <span class="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert one or multiple JPG photos to a PDF document. Great for submitting documents, photo albums, or reports.</p>
+                <span class="text-sm font-semibold text-red-600 dark:text-red-400 group-hover:underline">Convert JPG to PDF &rarr;</span>
+            </a>
+
+            <!-- PNG to PDF -->
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">PNG to PDF</span>
+                    <span class="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert PNG images to PDF. Merge multiple PNG screenshots or designs into a single shareable PDF file.</p>
+                <span class="text-sm font-semibold text-red-600 dark:text-red-400 group-hover:underline">Convert PNG to PDF &rarr;</span>
+            </a>
+
+            <!-- WebP to PDF -->
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">WebP to PDF</span>
+                    <span class="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert WebP images to PDF for easy sharing and archiving. WebP is common in web screenshots and downloads.</p>
+                <span class="text-sm font-semibold text-red-600 dark:text-red-400 group-hover:underline">Convert WebP to PDF &rarr;</span>
+            </a>
+
+            <!-- HEIC to PDF -->
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">HEIC to PDF</span>
+                    <span class="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert iPhone HEIC photos directly to PDF. Perfect for submitting Apple device photos as a document.</p>
+                <span class="text-sm font-semibold text-red-600 dark:text-red-400 group-hover:underline">Convert HEIC to PDF &rarr;</span>
+            </a>
+
+            <!-- TIFF to PDF -->
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">TIFF to PDF</span>
+                    <span class="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert professional TIFF scans to PDF. Ideal for digitizing documents, artwork, and scanned pages.</p>
+                <span class="text-sm font-semibold text-red-600 dark:text-red-400 group-hover:underline">Convert TIFF to PDF &rarr;</span>
+            </a>
+
+            <!-- BMP to PDF -->
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">BMP to PDF</span>
+                    <span class="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert BMP bitmap files to PDF. Compress bulky BMP images into a portable, shareable PDF document.</p>
+                <span class="text-sm font-semibold text-red-600 dark:text-red-400 group-hover:underline">Convert BMP to PDF &rarr;</span>
+            </a>
+
+            <!-- Multiple Images to PDF -->
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">Images to PDF</span>
+                    <span class="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Merge multiple images into one PDF. Upload any mix of JPG, PNG, WebP, TIFF, HEIC images and combine them.</p>
+                <span class="text-sm font-semibold text-red-600 dark:text-red-400 group-hover:underline">Merge Images to PDF &rarr;</span>
+            </a>
+
+            <!-- AVIF to PDF -->
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600 transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">AVIF to PDF</span>
+                    <span class="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-full font-medium">Free</span>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Convert AVIF next-gen images to PDF for document sharing. Make your modern-format images universally accessible.</p>
+                <span class="text-sm font-semibold text-red-600 dark:text-red-400 group-hover:underline">Convert AVIF to PDF &rarr;</span>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section id="faq" class="py-20 bg-white dark:bg-gray-800 transition-colors duration-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-14">
+            Frequently Asked Questions
+        </h2>
+        <div class="space-y-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Are these image tools really free?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Yes, completely free. Image Converter Pro offers all image conversion tools at no cost, with no hidden fees, no subscriptions, and no premium tiers. You can convert as many images as you need without paying anything.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Do I need to create an account?</h3>
+                <p class="text-gray-600 dark:text-gray-300">No account or registration required. Just open the tool, upload your images, and start converting. No email address, no sign-up form, nothing.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">How secure are my uploaded files?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Very secure. All file processing happens on our encrypted servers, and files are automatically deleted shortly after download. We never access, share, or store your images beyond the conversion process.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">What is the maximum file size?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Each image file can be up to 50 MB. You can convert multiple files in one session using the batch conversion feature of the image format converter.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Can I convert HEIC photos from my iPhone?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Absolutely. We fully support HEIC and HEIF formats — the default format for iPhone and iPad photos. Convert your iPhone pictures to JPG, PNG, WebP, or any other format, or combine them into a PDF.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Will my converted images have watermarks?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Never. All converted images and PDFs are completely free of watermarks, logos, or branding. You get clean output files every time.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Can I merge multiple images into one PDF?</h3>
+                <p class="text-gray-600 dark:text-gray-300">Yes. Our Image to PDF converter lets you upload multiple images and combine them all into a single multi-page PDF document. Each image becomes one page in the PDF, in the order you upload them.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm transition-colors duration-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Does the conversion affect image quality?</h3>
+                <p class="text-gray-600 dark:text-gray-300">We use lossless compression for PNG and TIFF conversions. For lossy formats like JPEG and WebP, we apply a quality setting of 95+ to preserve maximum visual quality. Any quality difference is imperceptible in normal use.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to Convert Your Images?</h2>
+        <p class="text-xl text-blue-100 mb-8">Choose your tool and get started in seconds. No sign-up, no downloads, no hassle.</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="{{ url_for('main.image_converter') }}"
+               class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-700 font-bold rounded-xl hover:bg-blue-50 transition-colors text-lg">
+                Image Format Converter
+            </a>
+            <a href="{{ url_for('main.image_to_pdf_page') }}"
+               class="inline-flex items-center justify-center px-8 py-4 bg-red-500 text-white font-bold rounded-xl hover:bg-red-400 transition-colors text-lg">
+                Image to PDF Converter
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "Image Converter Pro",
+      "url": "{{ request.url_root }}",
+      "description": "Free online image conversion tools. Convert PNG to JPG, JPG to PNG, JPG to WebP, PNG to WebP, HEIC to JPG, images to PDF, and more. Fast, secure, no watermarks.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ request.url_root }}image-converter"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "name": "Free Online Image Conversion Tools",
+      "description": "A collection of free tools to convert and transform images online.",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Image Format Converter",
+            "url": "{{ request.url_root }}image-converter",
+            "description": "Convert images between 9 formats: JPG, PNG, WebP, AVIF, TIFF, BMP, GIF, ICO, HEIC. Batch conversion with real-time progress.",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Any",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Image to PDF Converter",
+            "url": "{{ request.url_root }}image-to-pdf",
+            "description": "Convert and merge JPG, PNG, WebP, TIFF, HEIC images into a single PDF document.",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Any",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are these image tools really free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, completely free with no hidden fees, subscriptions, or premium tiers." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to create an account?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No account or registration required. Just upload your images and start converting." }
+        },
+        {
+          "@type": "Question",
+          "name": "How secure are my uploaded files?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Files are processed on encrypted servers and automatically deleted after download. We never store or share your images." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I merge multiple images into one PDF?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our Image to PDF converter lets you upload multiple images and combine them into a single multi-page PDF." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}

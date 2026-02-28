@@ -15,8 +15,5 @@ pillow-heif==0.15.0
 # Production Server
 gunicorn==21.2.0
 
-# File Type Detection
-python-magic
-
 # Environment Variables
 python-dotenv==1.0.0
